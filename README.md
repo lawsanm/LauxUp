@@ -33,13 +33,27 @@ Navigate like a pro with built-in hotkeys:
 
 ---
 
-## 🛠️ Installation
+## 🚀 Quick Start: How to Install
 
-1. Clone or download this repository.
-2. Open **Chrome** and navigate to `chrome://extensions`.
-3. Enable **Developer mode** in the top right corner.
-4. Click **Load unpacked** and select the project folder.
-5. Visit [ugvle.ucsc.cmb.ac.lk](https://ugvle.ucsc.cmb.ac.lk/) to see the transformation.
+Since LauxUp is a custom experience, you can install it manually in just a few seconds:
+
+### Step 1: Download the Code
+- **Option A (GitHub Desktop):** Clone this repository to your local machine.
+- **Option B (Direct Download):** Click the green **Code** button at the top of this page and select **Download ZIP**. Extract the ZIP file to a folder on your computer.
+
+### Step 2: Open Chrome Extensions
+- Open Google Chrome and type `chrome://extensions` in the address bar, or go to **Settings > Extensions**.
+
+### Step 3: Enable Developer Mode
+- In the top right corner of the Extensions page, toggle the **Developer mode** switch to **ON**.
+
+### Step 4: Load the Extension
+- Click the **Load unpacked** button that appears in the top left.
+- Select the folder where you extracted/cloned the LauxUp code (the folder containing `manifest.json`).
+
+### Step 5: Pin & Enjoy
+- Click the **Puzzle icon** in your Chrome toolbar and **Pin** LauxUp for easy access.
+- Visit [ugvle.ucsc.cmb.ac.lk](https://ugvle.ucsc.cmb.ac.lk/) to see your new dashboard!
 
 ---
 
