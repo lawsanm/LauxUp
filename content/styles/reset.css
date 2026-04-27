@@ -24,7 +24,8 @@ html, body,
 .pagelayout-course #page.drawers,
 .pagelayout-incourse #page.drawers,
 .pagelayout-login #page.drawers,
-.pagelayout-frontpage #page.drawers {
+.pagelayout-frontpage #page.drawers,
+.secondary-navigation, .moremenu {
   background-color: var(--bg-surface-0) !important;
   background-image: none !important;
   color: var(--text-primary) !important;
@@ -63,6 +64,30 @@ body *, body *::before, body *::after {
   border-bottom: 1px solid var(--border-subtle) !important;
 }
 .page-context-header { background-color: transparent !important; }
+
+/* Secondary navigation (tabs) */
+.secondary-navigation {
+  background-color: var(--bg-surface-0) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  padding: 0 !important;
+  margin-bottom: var(--space-md) !important;
+}
+.secondary-navigation .moremenu {
+  background-color: transparent !important;
+}
+.secondary-navigation .nav-tabs {
+  border-bottom: none !important;
+  background-color: transparent !important;
+  padding: 0 var(--space-xl) !important;
+}
+.secondary-navigation .nav-link {
+  padding: var(--space-md) var(--space-lg) !important;
+  font-weight: 500 !important;
+  border-radius: 0 !important;
+}
+.secondary-navigation .nav-link.active {
+  border-bottom-width: 3px !important;
+}
 
 /* === TOP NAVBAR — HIDDEN (replaced by sidebar) === */
 nav.navbar, nav.navbar.fixed-top, .navbar.fixed-top { display: none !important; }
