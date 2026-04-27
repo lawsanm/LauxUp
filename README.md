@@ -2,8 +2,6 @@
 
 Transform your university learning environment into a premium, state-of-the-art dashboard. LauxUp is a high-end browser extension designed to eliminate clutter and provide a professional workspace inspired by the world's best productivity tools.
 
-**Inspired by:** Notion · Linear · Vercel · Apple HIG
-
 ---
 
 ## 💎 The Experience
