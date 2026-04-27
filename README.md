@@ -55,6 +55,12 @@ Since LauxUp is a custom experience, you can install it manually in just a few s
 - Click the **Puzzle icon** in your Chrome toolbar and **Pin** LauxUp for easy access.
 - Visit [ugvle.ucsc.cmb.ac.lk](https://ugvle.ucsc.cmb.ac.lk/) to see your new dashboard!
 
+### How to Uninstall
+If you ever need to remove the extension:
+1. Go back to `chrome://extensions`.
+2. Find the **LauxUp** card.
+3. Click the **Remove** button.
+
 ---
 
 ## 🏗️ Architecture
