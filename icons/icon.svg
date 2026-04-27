@@ -1,0 +1,17 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect x="8" y="8" width="112" height="112" rx="24" fill="#0F172A"/>
+
+  <!-- Stylized L -->
+  <path d="M40 32 V88 H80" stroke="url(#grad)" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Up arrow -->
+  <path d="M70 58 L88 40 L106 58" stroke="url(#grad)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

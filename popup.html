@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LauxUp</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+    <div class="popup__header">
+      <div class="popup__brand">
+        <div class="popup__logo">
+          <svg width="20" height="20" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="grad-popup" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4F46E5"/>
+                <stop offset="100%" stop-color="#06B6D4"/>
+              </linearGradient>
+            </defs>
+            <path d="M40 32 V88 H80" stroke="url(#grad-popup)" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M70 58 L88 40 L106 58" stroke="url(#grad-popup)" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="popup__title">LauxUp</h1>
+          <p class="popup__version">v1.0.0</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup__content">
+      <div class="popup__main">
+        <label class="mr-power-btn">
+          <input type="checkbox" id="toggle-enabled" checked>
+          <div class="mr-power-btn__ui">
+            <div class="mr-power-btn__glow"></div>
+            <div class="mr-power-btn__inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <defs>
+                  <linearGradient id="grad-power" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4F46E5"/>
+                    <stop offset="100%" stop-color="#06B6D4"/>
+                  </linearGradient>
+                </defs>
+                <path d="M18.36 6.64a9 9 0 1 1-12.73 0" stroke="currentColor"></path>
+                <path d="M12 2v10" stroke="currentColor"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="mr-power-btn__status">Extension is <span id="status-text">ON</span></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="popup__footer">
+      <span class="popup__shortcut">Press <kbd>[</kbd> to toggle sidebar</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

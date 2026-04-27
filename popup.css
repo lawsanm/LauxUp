@@ -1,0 +1,205 @@
+/*
+ * MOODLE REDESIGN — POPUP STYLES
+ * Vercel-inspired minimal dark popup
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #09090b;
+  color: #fafafa;
+  width: 320px;
+  overflow: hidden;
+}
+
+.popup {
+  display: flex;
+  flex-direction: column;
+}
+
+/* === HEADER === */
+.popup__header {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.popup__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.popup__logo {
+  width: 36px;
+  height: 36px;
+  background: #0F172A;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.popup__title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fafafa;
+}
+
+.popup__version {
+  font-size: 11px;
+  color: #71717a;
+  margin-top: 1px;
+}
+
+/* === CONTENT === */
+.popup__content {
+  padding: 24px 20px 32px;
+}
+
+.popup__main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* === POWER BUTTON === */
+.mr-power-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+}
+
+.mr-power-btn input {
+  display: none;
+}
+
+.mr-power-btn__ui {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mr-power-btn__glow {
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(circle, #4F46E5 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+  filter: blur(20px);
+  z-index: 0;
+}
+
+.mr-power-btn__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: #0F172A;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #334155;
+  border: 2px solid #1E293B;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mr-power-btn__inner svg {
+  width: 42px;
+  height: 42px;
+  stroke-width: 2.5;
+  transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.mr-power-btn:hover .mr-power-btn__inner {
+  transform: scale(1.05);
+  border-color: #334155;
+  color: #475569;
+}
+
+/* Checked (ON) State */
+.mr-power-btn input:checked + .mr-power-btn__ui .mr-power-btn__glow {
+  opacity: 0.4;
+}
+
+.mr-power-btn input:checked + .mr-power-btn__ui .mr-power-btn__inner {
+  background: #0F172A;
+  border-color: #4F46E5;
+  color: #fff;
+  box-shadow: 
+    0 0 20px rgba(79, 70, 229, 0.3),
+    inset 0 0 15px rgba(79, 70, 229, 0.2);
+}
+
+.mr-power-btn input:checked + .mr-power-btn__ui .mr-power-btn__inner svg {
+  stroke: url(#grad-power);
+  filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.5));
+}
+
+/* Status Text */
+.mr-power-btn__status {
+  font-size: 14px;
+  font-weight: 600;
+  color: #71717a;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
+.mr-power-btn input:checked ~ .mr-power-btn__status {
+  color: #fafafa;
+}
+
+#status-text {
+  text-transform: uppercase;
+  color: #f43f5e;
+  transition: color 0.3s ease;
+}
+
+.mr-power-btn input:checked ~ .mr-power-btn__status #status-text {
+  color: #10b981;
+}
+
+/* === FOOTER === */
+.popup__footer {
+  padding: 12px 20px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup__shortcut {
+  font-size: 11px;
+  color: #52525b;
+}
+
+kbd {
+  background: #27272a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: #a1a1aa;
+}

@@ -1,0 +1,107 @@
+/*
+ * MOODLE REDESIGN — ANIMATIONS
+ * Micro-motion + keyframe library
+ */
+
+/* === KEYFRAMES === */
+@keyframes mr-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes mr-fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mr-fadeInDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mr-slideInLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes mr-slideInRight {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes mr-scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes mr-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes mr-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes mr-pulseScale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes mr-ringDraw {
+  from { stroke-dashoffset: var(--mr-ring-circumference, 283); }
+  to { stroke-dashoffset: var(--mr-ring-offset, 0); }
+}
+
+@keyframes mr-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes mr-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* === UTILITY CLASSES === */
+.mr-animate-fadeIn { animation: mr-fadeIn var(--dur-normal) var(--ease-out) both; }
+.mr-animate-fadeInUp { animation: mr-fadeInUp var(--dur-slow) var(--ease-out) both; }
+.mr-animate-fadeInDown { animation: mr-fadeInDown var(--dur-slow) var(--ease-out) both; }
+.mr-animate-slideInLeft { animation: mr-slideInLeft var(--dur-slow) var(--ease-out) both; }
+.mr-animate-slideInRight { animation: mr-slideInRight var(--dur-slow) var(--ease-out) both; }
+.mr-animate-scaleIn { animation: mr-scaleIn var(--dur-slow) var(--ease-spring) both; }
+.mr-animate-pulse { animation: mr-pulse 2s var(--ease-in-out) infinite; }
+.mr-animate-spin { animation: mr-spin 1s linear infinite; }
+.mr-animate-float { animation: mr-float 3s var(--ease-in-out) infinite; }
+
+/* Staggered children animations */
+.mr-stagger > * { animation: mr-fadeInUp var(--dur-slow) var(--ease-out) both; }
+.mr-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.mr-stagger > *:nth-child(2) { animation-delay: 50ms; }
+.mr-stagger > *:nth-child(3) { animation-delay: 100ms; }
+.mr-stagger > *:nth-child(4) { animation-delay: 150ms; }
+.mr-stagger > *:nth-child(5) { animation-delay: 200ms; }
+.mr-stagger > *:nth-child(6) { animation-delay: 250ms; }
+.mr-stagger > *:nth-child(7) { animation-delay: 300ms; }
+.mr-stagger > *:nth-child(8) { animation-delay: 350ms; }
+.mr-stagger > *:nth-child(9) { animation-delay: 400ms; }
+.mr-stagger > *:nth-child(10) { animation-delay: 450ms; }
+.mr-stagger > *:nth-child(n+11) { animation-delay: 500ms; }
+
+/* Skeleton loader */
+.mr-skeleton {
+  background: linear-gradient(90deg, var(--bg-surface-1) 25%, var(--bg-surface-2) 50%, var(--bg-surface-1) 75%);
+  background-size: 200% 100%;
+  animation: mr-shimmer 1.5s var(--ease-in-out) infinite;
+  border-radius: var(--radius-md);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

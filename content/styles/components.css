@@ -1,0 +1,240 @@
+/*
+ * MOODLE REDESIGN — SHARED COMPONENTS
+ * Badges, buttons, progress rings, tooltips, avatars
+ */
+
+/* === BADGES === */
+.mr-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.mr-badge--blue { background: rgba(59,130,246,0.15); color: #93c5fd; }
+.mr-badge--green { background: rgba(34,197,94,0.15); color: #86efac; }
+.mr-badge--amber { background: rgba(245,158,11,0.15); color: #fcd34d; }
+.mr-badge--red { background: rgba(239,68,68,0.15); color: #fca5a5; }
+.mr-badge--purple { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+.mr-badge--gray { background: rgba(161,161,170,0.1); color: var(--text-secondary); }
+.mr-badge--cyan { background: rgba(6,182,212,0.15); color: #67e8f9; }
+
+/* === STATUS DOTS === */
+.mr-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.mr-status-dot--overdue { background-color: var(--accent-red); box-shadow: 0 0 8px rgba(239,68,68,0.4); }
+.mr-status-dot--soon { background-color: var(--accent-amber); box-shadow: 0 0 8px rgba(245,158,11,0.4); animation: mr-pulse 2s var(--ease-in-out) infinite; }
+.mr-status-dot--upcoming { background-color: var(--accent-green); }
+.mr-status-dot--done { background-color: var(--accent-blue); }
+
+/* === CUSTOM BUTTONS === */
+.mr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all var(--dur-normal) var(--ease-out) !important;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+.mr-btn--primary {
+  background: var(--gradient-primary);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+.mr-btn--primary:hover {
+  box-shadow: 0 6px 16px rgba(168, 85, 247, 0.5);
+  transform: translateY(-1px);
+}
+.mr-btn--ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+}
+.mr-btn--ghost:hover {
+  background-color: var(--bg-surface-2);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+.mr-btn--icon {
+  padding: var(--space-sm);
+  background-color: transparent;
+  color: var(--text-tertiary);
+  border-radius: var(--radius-md);
+}
+.mr-btn--icon:hover {
+  background-color: var(--bg-surface-2);
+  color: var(--text-primary);
+}
+
+/* === PROGRESS RING (SVG) === */
+.mr-progress-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.mr-progress-ring svg {
+  transform: rotate(-90deg);
+  display: block;
+}
+.mr-progress-ring__bg {
+  stroke: var(--bg-surface-3);
+  fill: none;
+}
+.mr-progress-ring__fill {
+  fill: none;
+  stroke: url(#gradient-progress) var(--accent-purple); /* Fallback */
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s var(--ease-out) !important;
+}
+.mr-progress-ring__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* === AVATAR === */
+.mr-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+.mr-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* === DIVIDER === */
+.mr-divider {
+  height: 1px;
+  background-color: var(--border-subtle);
+  margin: var(--space-sm) 0;
+  border: none;
+}
+
+/* === EMPTY STATE === */
+.mr-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3xl) var(--space-lg);
+  text-align: center;
+  gap: var(--space-md);
+}
+.mr-empty__icon {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+.mr-empty__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.mr-empty__desc {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  max-width: 300px;
+}
+
+/* === FILTER PILLS === */
+.mr-filters {
+  display: flex;
+  gap: var(--space-sm);
+  overflow-x: auto;
+  padding-bottom: var(--space-xs);
+  scrollbar-width: none;
+}
+.mr-filters::-webkit-scrollbar { display: none; }
+.mr-filter-pill {
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--dur-normal) var(--ease-out) !important;
+}
+.mr-filter-pill:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  background: var(--bg-surface-3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+.mr-filter-pill.active {
+  color: #fff;
+  background: var(--gradient-primary);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+/* === SECTION LABEL (Vercel style) === */
+.mr-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: var(--space-xs) var(--space-md);
+  margin-bottom: var(--space-xs);
+}
+
+/* === CARD CONTAINER === */
+.mr-card {
+  background-color: var(--bg-surface-1);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--dur-normal) var(--ease-out) !important;
+}
+.mr-card:hover {
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+.mr-card--flat:hover {
+  transform: none;
+  box-shadow: none;
+}

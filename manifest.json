@@ -1,0 +1,63 @@
+{
+  "manifest_version": 3,
+  "name": "LauxUp",
+  "version": "1.0.0",
+  "description": "Transform your Moodle experience into a premium, modern dashboard",
+  "icons": {
+    "16": "icons/icon.png",
+    "48": "icons/icon.png",
+    "128": "icons/icon.png"
+  },
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon.png",
+      "48": "icons/icon.png",
+      "128": "icons/icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://ugvle.ucsc.cmb.ac.lk/*"
+      ],
+      "css": [
+        "content/styles/tokens.css",
+        "content/styles/reset.css",
+        "content/styles/animations.css",
+        "content/styles/components.css",
+        "content/styles/sidebar.css",
+        "content/styles/dashboard.css",
+        "content/styles/course.css",
+        "content/styles/assignments.css"
+      ],
+      "js": [
+        "content/features/darkMode.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "*://ugvle.ucsc.cmb.ac.lk/*"
+      ],
+      "js": [
+        "content/bundle.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icons/ucsc_logo.jpg"
+      ],
+      "matches": [
+        "*://ugvle.ucsc.cmb.ac.lk/*"
+      ]
+    }
+  ]
+}
