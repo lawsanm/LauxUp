@@ -20,6 +20,10 @@ async function init() {
     return;
   }
 
+  if (redirectDuplicatedMyPath()) {
+    return;
+  }
+
   const pageType = getPageType();
   console.log(`[MoodleRedesign] Page type: ${pageType}`);
 
@@ -66,6 +70,14 @@ async function init() {
     console.log('[MoodleRedesign] Settings changed, reloading...');
     window.location.reload();
   });
+}
+
+function redirectDuplicatedMyPath() {
+  const fixedPath = window.location.pathname.replace(/^\/my\/my(?=\/|$)/, '/my');
+  if (fixedPath === window.location.pathname) return false;
+
+  window.location.replace(`${fixedPath}${window.location.search}${window.location.hash}`);
+  return true;
 }
 
 // Wait for DOM to be ready

@@ -217,7 +217,7 @@
     let html = `
     <!-- Brand & Toggle -->
     <div class="mr-sidebar__brand">
-      <a href="https://ugvle.ucsc.cmb.ac.lk/ugvle_25/" class="mr-sidebar__brand-link">
+      <a href="https://ugvle.ucsc.cmb.ac.lk/" class="mr-sidebar__brand-link">
         <div class="mr-sidebar__brand-icon">
           <img src="${brandLogoUrl}" alt="${BRAND_SUBTITLE} logo" class="mr-sidebar__brand-logo">
         </div>
@@ -454,11 +454,24 @@
     return window.location.href.includes(url);
   }
   function getMoodleBase() {
-    const pathParts = window.location.pathname.split("/");
-    if (pathParts.length > 1 && pathParts[1]) {
-      return `/${pathParts[1]}`;
-    }
-    return "";
+    const firstSegment = window.location.pathname.split("/").filter(Boolean)[0] || "";
+    const rootRoutes = /* @__PURE__ */ new Set([
+      "admin",
+      "badges",
+      "blocks",
+      "calendar",
+      "course",
+      "grade",
+      "login",
+      "message",
+      "mod",
+      "my",
+      "pluginfile.php",
+      "report",
+      "theme",
+      "user"
+    ]);
+    return firstSegment && !rootRoutes.has(firstSegment) ? `/${firstSegment}` : "";
   }
 
   // content/ui/dashboard.js
@@ -473,7 +486,8 @@
         const userName = extractUserName2();
         const courses = extractCourseCards();
         const timeline = extractTimelineItems();
-        dashboard.innerHTML = buildDashboardHTML(userName, courses, timeline);
+        const announcements = extractSiteAnnouncements(mainRegion, dashboard);
+        dashboard.innerHTML = buildDashboardHTML(userName, courses, timeline, announcements);
         requestAnimationFrame(() => {
           animateProgressRings();
         });
@@ -498,7 +512,7 @@
       console.warn("[MoodleRedesign] Dashboard init failed:", e.message);
     }
   }
-  function buildDashboardHTML(userName, courses, timeline) {
+  function buildDashboardHTML(userName, courses, timeline, announcements = []) {
     const greeting = getGreeting();
     const today = (/* @__PURE__ */ new Date()).toLocaleDateString("en-US", {
       weekday: "long",
@@ -547,6 +561,9 @@
     </div>
   `;
     html += buildTodayPanel(todayItems);
+    if (announcements.length > 0) {
+      html += buildAnnouncementsPanel(announcements);
+    }
     if (courses.length > 0) {
       html += `<div class="mr-section-header">${getIcon("book-open", 18)} My Courses</div>`;
       html += `<div class="mr-courses-grid mr-stagger">`;
@@ -555,6 +572,29 @@
       });
       html += `</div>`;
     }
+    return html;
+  }
+  function buildAnnouncementsPanel(announcements) {
+    let html = `
+    <div class="mr-section-header">${getIcon("alert-circle", 18)} Site Announcements</div>
+    <div class="mr-announcements mr-stagger">
+  `;
+    announcements.forEach((announcement) => {
+      html += `
+      <details class="mr-announcement">
+        <summary class="mr-announcement__summary">
+          <span class="mr-announcement__chevron">${getIcon("chevron-right", 16)}</span>
+          <span class="mr-announcement__content">
+            <span class="mr-announcement__title">${escapeHTML(announcement.title)}</span>
+            ${announcement.meta ? `<span class="mr-announcement__meta">${escapeHTML(announcement.meta)}</span>` : ""}
+            <span class="mr-announcement__excerpt">${escapeHTML(announcement.summary)}</span>
+          </span>
+        </summary>
+        <div class="mr-announcement__body">${announcement.bodyHtml}</div>
+      </details>
+    `;
+    });
+    html += `</div>`;
     return html;
   }
   function buildTodayPanel(items) {
@@ -799,6 +839,69 @@
       });
     });
     return items;
+  }
+  function extractSiteAnnouncements(mainRegion, dashboard) {
+    const posts = Array.from(mainRegion.querySelectorAll(
+      '.forumpost, .forum-post-container, [data-region="post"], article[data-content="forum-post"]'
+    )).filter((post) => !dashboard.contains(post));
+    const seen = /* @__PURE__ */ new Set();
+    return posts.map((post) => {
+      const titleEl = post.querySelector(
+        '.discussionname, .subject, h3, h4, [data-region="post-subject"], .forum-post-core-subject'
+      );
+      const bodyEl = post.querySelector(
+        '.posting, .post-content-container, .forum-post-core-content, [data-region="post-content"]'
+      );
+      const title = extractText(titleEl) || "Site announcement";
+      const meta = extractAnnouncementMeta(post);
+      const bodyHtml = sanitizeAnnouncementBody(bodyEl || post);
+      const bodyText = extractText(bodyEl || post);
+      const summary = summarizeAnnouncement(bodyText.replace(title, "").trim());
+      const key = `${title}|${summary}`;
+      if (!summary || seen.has(key)) return null;
+      seen.add(key);
+      return { title, meta, summary, bodyHtml };
+    }).filter(Boolean).slice(0, 6);
+  }
+  function extractAnnouncementMeta(post) {
+    const author = extractText(post.querySelector(".author, .byline, [data-region=\"post-author\"]"));
+    const date = extractText(post.querySelector("time, .post-date, [data-region=\"post-date\"]"));
+    if (author && date && !author.includes(date)) return `${author} - ${date}`;
+    return author || date || "";
+  }
+  function sanitizeAnnouncementBody(source) {
+    const clone = source.cloneNode(true);
+    clone.querySelectorAll(
+      "script, style, iframe, object, embed, form, button, input, textarea, select, .commands, .forum-post-footer, .post-actions, .ratingform, .footer"
+    ).forEach((node) => node.remove());
+    clone.querySelectorAll("[id]").forEach((node) => node.removeAttribute("id"));
+    clone.querySelectorAll("*").forEach((node) => {
+      Array.from(node.attributes).forEach((attr) => {
+        if (/^on/i.test(attr.name)) node.removeAttribute(attr.name);
+      });
+    });
+    clone.querySelectorAll("a").forEach((link) => {
+      if (/^\s*javascript:/i.test(link.getAttribute("href") || "")) {
+        link.removeAttribute("href");
+      }
+      link.setAttribute("target", "_blank");
+      link.setAttribute("rel", "noopener noreferrer");
+    });
+    return clone.innerHTML.trim();
+  }
+  function summarizeAnnouncement(text) {
+    const normalized = text.replace(/\s+/g, " ").trim();
+    if (normalized.length <= 180) return normalized;
+    return `${normalized.slice(0, 180).replace(/\s+\S*$/, "")}...`;
+  }
+  function escapeHTML(value) {
+    return String(value || "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
   }
   function getGreeting() {
     const hour = (/* @__PURE__ */ new Date()).getHours();
@@ -1183,11 +1286,24 @@
     return str.substring(0, len) + "...";
   }
   function getMoodleBase2() {
-    const pathParts = window.location.pathname.split("/");
-    if (pathParts.length > 1 && pathParts[1]) {
-      return `/${pathParts[1]}`;
-    }
-    return "";
+    const firstSegment = window.location.pathname.split("/").filter(Boolean)[0] || "";
+    const rootRoutes = /* @__PURE__ */ new Set([
+      "admin",
+      "badges",
+      "blocks",
+      "calendar",
+      "course",
+      "grade",
+      "login",
+      "message",
+      "mod",
+      "my",
+      "pluginfile.php",
+      "report",
+      "theme",
+      "user"
+    ]);
+    return firstSegment && !rootRoutes.has(firstSegment) ? `/${firstSegment}` : "";
   }
 
   // content/ui/clutter.js
@@ -1449,8 +1565,24 @@
     window.location.href = base + path;
   }
   function getMoodleBase3() {
-    const match = window.location.pathname.match(/^(\/[^/]+\/)/);
-    return match ? match[1].replace(/\/$/, "") : "";
+    const firstSegment = window.location.pathname.split("/").filter(Boolean)[0] || "";
+    const rootRoutes = /* @__PURE__ */ new Set([
+      "admin",
+      "badges",
+      "blocks",
+      "calendar",
+      "course",
+      "grade",
+      "login",
+      "message",
+      "mod",
+      "my",
+      "pluginfile.php",
+      "report",
+      "theme",
+      "user"
+    ]);
+    return firstSegment && !rootRoutes.has(firstSegment) ? `/${firstSegment}` : "";
   }
   function toggleAssignmentTracker() {
     const overlay = document.querySelector(".mr-assignments-overlay");
@@ -1514,6 +1646,9 @@
       console.log("[MoodleRedesign] Extension disabled.");
       return;
     }
+    if (redirectDuplicatedMyPath()) {
+      return;
+    }
     const pageType = getPageType();
     console.log(`[MoodleRedesign] Page type: ${pageType}`);
     try {
@@ -1543,6 +1678,12 @@
       console.log("[MoodleRedesign] Settings changed, reloading...");
       window.location.reload();
     });
+  }
+  function redirectDuplicatedMyPath() {
+    const fixedPath = window.location.pathname.replace(/^\/my\/my(?=\/|$)/, "/my");
+    if (fixedPath === window.location.pathname) return false;
+    window.location.replace(`${fixedPath}${window.location.search}${window.location.hash}`);
+    return true;
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);

@@ -13,7 +13,7 @@ export async function initDashboard() {
 
   try {
     const mainRegion = await waitForElement('#region-main', 5000);
-    
+
     // Create our dashboard container
     const dashboard = createElement('div', { className: 'mr-dashboard mr-animate-fadeIn' });
     mainRegion.prepend(dashboard);
@@ -23,9 +23,10 @@ export async function initDashboard() {
       const userName = extractUserName();
       const courses = extractCourseCards();
       const timeline = extractTimelineItems();
-      
-      dashboard.innerHTML = buildDashboardHTML(userName, courses, timeline);
-      
+      const announcements = extractSiteAnnouncements(mainRegion, dashboard);
+
+      dashboard.innerHTML = buildDashboardHTML(userName, courses, timeline, announcements);
+
       requestAnimationFrame(() => {
         animateProgressRings();
       });
@@ -60,7 +61,7 @@ export async function initDashboard() {
   }
 }
 
-function buildDashboardHTML(userName, courses, timeline) {
+function buildDashboardHTML(userName, courses, timeline, announcements = []) {
   const greeting = getGreeting();
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
@@ -121,6 +122,11 @@ function buildDashboardHTML(userName, courses, timeline) {
   // Today panel
   html += buildTodayPanel(todayItems);
 
+  // Site announcements
+  if (announcements.length > 0) {
+    html += buildAnnouncementsPanel(announcements);
+  }
+
   // Course cards
   if (courses.length > 0) {
     html += `<div class="mr-section-header">${getIcon('book-open', 18)} My Courses</div>`;
@@ -131,6 +137,32 @@ function buildDashboardHTML(userName, courses, timeline) {
     html += `</div>`;
   }
 
+  return html;
+}
+
+function buildAnnouncementsPanel(announcements) {
+  let html = `
+    <div class="mr-section-header">${getIcon('alert-circle', 18)} Site Announcements</div>
+    <div class="mr-announcements mr-stagger">
+  `;
+
+  announcements.forEach((announcement) => {
+    html += `
+      <details class="mr-announcement">
+        <summary class="mr-announcement__summary">
+          <span class="mr-announcement__chevron">${getIcon('chevron-right', 16)}</span>
+          <span class="mr-announcement__content">
+            <span class="mr-announcement__title">${escapeHTML(announcement.title)}</span>
+            ${announcement.meta ? `<span class="mr-announcement__meta">${escapeHTML(announcement.meta)}</span>` : ''}
+            <span class="mr-announcement__excerpt">${escapeHTML(announcement.summary)}</span>
+          </span>
+        </summary>
+        <div class="mr-announcement__body">${announcement.bodyHtml}</div>
+      </details>
+    `;
+  });
+
+  html += `</div>`;
   return html;
 }
 
@@ -223,12 +255,12 @@ function buildCourseCard(course) {
       </div>
       <div class="mr-course-card__footer">
         ${course.nextDeadline
-          ? `<div class="mr-course-card__deadline">
+      ? `<div class="mr-course-card__deadline">
                ${getIcon('clock', 14)}
                <span>${course.nextDeadline}</span>
              </div>`
-          : `<div class="mr-course-card__deadline" style="color: var(--text-muted)">No upcoming deadlines</div>`
-        }
+      : `<div class="mr-course-card__deadline" style="color: var(--text-muted)">No upcoming deadlines</div>`
+    }
       </div>
     </a>
   `;
@@ -357,8 +389,8 @@ function extractCourseCards() {
     if (!link?.href || seen.has(link.href)) return;
     seen.add(link.href);
 
-    const nameNode = card.querySelector('.coursename') 
-      || card.querySelector('.multiline .aalink') 
+    const nameNode = card.querySelector('.coursename')
+      || card.querySelector('.multiline .aalink')
       || link;
     const name = extractText(nameNode);
 
@@ -435,6 +467,81 @@ function extractTimelineItems() {
   });
 
   return items;
+}
+
+function extractSiteAnnouncements(mainRegion, dashboard) {
+  const posts = Array.from(mainRegion.querySelectorAll(
+    '.forumpost, .forum-post-container, [data-region="post"], article[data-content="forum-post"]'
+  )).filter((post) => !dashboard.contains(post));
+
+  const seen = new Set();
+
+  return posts.map((post) => {
+    const titleEl = post.querySelector(
+      '.discussionname, .subject, h3, h4, [data-region="post-subject"], .forum-post-core-subject'
+    );
+    const bodyEl = post.querySelector(
+      '.posting, .post-content-container, .forum-post-core-content, [data-region="post-content"]'
+    );
+
+    const title = extractText(titleEl) || 'Site announcement';
+    const meta = extractAnnouncementMeta(post);
+    const bodyHtml = sanitizeAnnouncementBody(bodyEl || post);
+    const bodyText = extractText(bodyEl || post);
+    const summary = summarizeAnnouncement(bodyText.replace(title, '').trim());
+    const key = `${title}|${summary}`;
+
+    if (!summary || seen.has(key)) return null;
+    seen.add(key);
+
+    return { title, meta, summary, bodyHtml };
+  }).filter(Boolean).slice(0, 6);
+}
+
+function extractAnnouncementMeta(post) {
+  const author = extractText(post.querySelector('.author, .byline, [data-region="post-author"]'));
+  const date = extractText(post.querySelector('time, .post-date, [data-region="post-date"]'));
+
+  if (author && date && !author.includes(date)) return `${author} - ${date}`;
+  return author || date || '';
+}
+
+function sanitizeAnnouncementBody(source) {
+  const clone = source.cloneNode(true);
+  clone.querySelectorAll(
+    'script, style, iframe, object, embed, form, button, input, textarea, select, .commands, .forum-post-footer, .post-actions, .ratingform, .footer'
+  ).forEach((node) => node.remove());
+  clone.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'));
+  clone.querySelectorAll('*').forEach((node) => {
+    Array.from(node.attributes).forEach((attr) => {
+      if (/^on/i.test(attr.name)) node.removeAttribute(attr.name);
+    });
+  });
+  clone.querySelectorAll('a').forEach((link) => {
+    if (/^\s*javascript:/i.test(link.getAttribute('href') || '')) {
+      link.removeAttribute('href');
+    }
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+  });
+
+  return clone.innerHTML.trim();
+}
+
+function summarizeAnnouncement(text) {
+  const normalized = text.replace(/\s+/g, ' ').trim();
+  if (normalized.length <= 180) return normalized;
+  return `${normalized.slice(0, 180).replace(/\s+\S*$/, '')}...`;
+}
+
+function escapeHTML(value) {
+  return String(value || '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[char]));
 }
 
 // === Helpers ===

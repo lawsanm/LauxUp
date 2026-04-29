@@ -443,9 +443,11 @@ function truncate(str, len) {
 }
 
 function getMoodleBase() {
-  const pathParts = window.location.pathname.split('/');
-  if (pathParts.length > 1 && pathParts[1]) {
-    return `/${pathParts[1]}`;
-  }
-  return '';
+  const firstSegment = window.location.pathname.split('/').filter(Boolean)[0] || '';
+  const rootRoutes = new Set([
+    'admin', 'badges', 'blocks', 'calendar', 'course', 'grade', 'login',
+    'message', 'mod', 'my', 'pluginfile.php', 'report', 'theme', 'user',
+  ]);
+
+  return firstSegment && !rootRoutes.has(firstSegment) ? `/${firstSegment}` : '';
 }

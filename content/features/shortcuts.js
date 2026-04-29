@@ -18,9 +18,13 @@ function navigateTo(path) {
 }
 
 function getMoodleBase() {
-  // Extract the Moodle base path from current URL
-  const match = window.location.pathname.match(/^(\/[^/]+\/)/);
-  return match ? match[1].replace(/\/$/, '') : '';
+  const firstSegment = window.location.pathname.split('/').filter(Boolean)[0] || '';
+  const rootRoutes = new Set([
+    'admin', 'badges', 'blocks', 'calendar', 'course', 'grade', 'login',
+    'message', 'mod', 'my', 'pluginfile.php', 'report', 'theme', 'user',
+  ]);
+
+  return firstSegment && !rootRoutes.has(firstSegment) ? `/${firstSegment}` : '';
 }
 
 function toggleAssignmentTracker() {
