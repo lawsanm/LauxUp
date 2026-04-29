@@ -7,6 +7,16 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
+@font-face {
+  font-family: 'Story Script';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url('chrome-extension://__MSG_@@extension_id__/fonts/StoryScript-Regular.ttf') format('truetype'),
+    url('../../fonts/StoryScript-Regular.ttf') format('truetype');
+}
+
 :root {
   /* === DARK PALETTE === */
   --bg-base:       #000000;
@@ -36,10 +46,13 @@
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
   --gradient-glow:    linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(168, 85, 247, 0.4) 100%);
+  --gradient-brand:   linear-gradient(125deg, #ffffff 0%, #7dd3fc 26%, #38bdf8 48%, #a78bfa 74%, #f0abfc 100%);
   --accent-glow:      rgba(168, 85, 247, 0.3);
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-brand: 'Story Script', sans-serif;
+  --brand-text-shadow: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.18)) drop-shadow(0 12px 20px rgba(56, 189, 248, 0.24));
 
   /* Spacing */
   --space-xs:  4px;

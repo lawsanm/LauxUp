@@ -122,7 +122,7 @@
   text-decoration: none !important;
   color: inherit !important;
   flex: 1;
-  overflow: hidden;
+  overflow: visible;
   cursor: pointer;
 }
 
@@ -161,17 +161,25 @@
 .mr-sidebar__brand-text {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   flex: 1;
   gap: 2px;
 }
 .mr-sidebar__brand-name {
-  font-size: 20px;
-  line-height: 1.05;
-  font-weight: 800;
-  color: var(--text-primary);
+  font-family: var(--font-brand) !important;
+  font-size: 38px;
+  line-height: 1;
+  font-weight: 400 !important;
+  font-style: normal;
+  font-synthesis: none;
+  color: #f4f4f5;
+  background: var(--gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   white-space: nowrap;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
+  filter: var(--brand-text-shadow);
 }
 .mr-sidebar__brand-sub {
   font-size: 11px;

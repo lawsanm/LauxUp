@@ -286,6 +286,44 @@ input[type="password"], input[type="number"], input[type="url"], textarea {
 .form-control::placeholder { color: var(--text-muted) !important; }
 label, .form-label { color: var(--text-secondary) !important; font-weight: 500 !important; }
 
+/* Required form cues */
+.form-required,
+.req,
+span.required,
+em.required,
+.requiredness,
+.fitem.required label,
+.fitem.required .form-label,
+.form-group.required label,
+.form-group.required .form-label,
+label.required,
+.form-label.required,
+[aria-required="true"] + label,
+label:has(+ [aria-required="true"]) {
+  font-style: italic !important;
+}
+.form-required,
+.req,
+abbr[title="Required"],
+abbr[title="required"],
+.text-danger[title="Required"],
+.text-danger[title="required"] {
+  color: #fcd34d !important;
+  font-style: italic !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.28) !important;
+}
+[aria-required="true"],
+.form-control[required],
+.custom-select[required],
+select[required],
+textarea[required],
+input[required] {
+  border-color: rgba(245, 158, 11, 0.42) !important;
+  box-shadow: inset 3px 0 0 rgba(245, 158, 11, 0.52) !important;
+}
+
 /* === BUTTONS === */
 .btn { font-family: var(--font-sans) !important; font-weight: 500 !important; border-radius: var(--radius-md) !important; }
 .btn-primary { background-color: var(--accent-blue) !important; border-color: var(--accent-blue) !important; color: #fff !important; }

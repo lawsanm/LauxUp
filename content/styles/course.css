@@ -198,6 +198,45 @@
   gap: var(--space-xs);
 }
 
+/* Native Moodle requirement text */
+[data-region="completionrequirements"],
+.completion-info,
+.completion-container,
+.activity-completion,
+.automatic-completion-conditions,
+.manual-completion,
+.manualcompletion,
+.autocompletion {
+  color: var(--text-secondary) !important;
+}
+[data-region="completionrequirements"] li,
+[data-region="completionrequirements"] p,
+[data-region="completionrequirements"] span,
+.completion-info li,
+.completion-info p,
+.completion-info span,
+.completion-container li,
+.completion-container p,
+.completion-container span,
+.activity-completion li,
+.activity-completion p,
+.activity-completion span,
+.automatic-completion-conditions li,
+.automatic-completion-conditions p,
+.automatic-completion-conditions span {
+  font-style: italic !important;
+}
+[data-region="completionrequirements"],
+.completion-info:not(:empty),
+.completion-container:not(:empty),
+.activity-completion:not(:empty),
+.automatic-completion-conditions:not(:empty) {
+  border-left: 3px solid rgba(245, 158, 11, 0.55) !important;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.12), rgba(245, 158, 11, 0)) !important;
+  border-radius: var(--radius-sm) !important;
+  padding-left: var(--space-sm) !important;
+}
+
 /* Completion badge */
 .mr-activity__completion {
   width: 20px;

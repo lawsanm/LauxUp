@@ -53,7 +53,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "icons/ucsc_logo.jpg"
+        "icons/ucsc_logo.jpg",
+        "fonts/StoryScript-Regular.ttf"
       ],
       "matches": [
         "*://ugvle.ucsc.cmb.ac.lk/*"

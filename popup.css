@@ -5,6 +5,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+@font-face {
+  font-family: 'Story Script';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/StoryScript-Regular.ttf') format('truetype');
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -51,10 +59,19 @@ body {
 }
 
 .popup__title {
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #fafafa;
+  font-family: 'Story Script', sans-serif !important;
+  font-size: 38px;
+  line-height: 1;
+  font-weight: 400 !important;
+  font-style: normal;
+  font-synthesis: none;
+  letter-spacing: 0;
+  color: #f4f4f5;
+  background: linear-gradient(125deg, #ffffff 0%, #7dd3fc 26%, #38bdf8 48%, #a78bfa 74%, #f0abfc 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.18)) drop-shadow(0 12px 20px rgba(56, 189, 248, 0.24));
 }
 
 .popup__version {
